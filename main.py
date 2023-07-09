@@ -102,7 +102,8 @@ def send_email():
     # Subject and contet of the email
     subject = "Keylog"
     content = """
-    Testing Keylogger txt file
+    Keylogger suspicious activities detected 
+    Attached is the txt file
     """
 
 
@@ -150,8 +151,63 @@ def search():
         'compromise',
         'tamper',
         'hijack',
-        'breach'
+        'breach',
+        "Unauthorized",
+        "Access",
+        "Data",
+        "Exfiltration",
+        "Transfers",
+        "Abuse",
+        "Privileges",
+        "System",
+        "Changes",
+        "File",
+        "Misuse",
+        "Theft",
+        "Intellectual",
+        "Property",
+        "Sharing",
+        "Login",
+        "Times",
+        "Modifications",
+        "Insider",
+        "Trading",
+        "Email",
+        "Forwarding",
+        "Sabotage",
+        "Social",
+        "Engineering",
+        "Phishing",
+        "Password",
+        "Identity",
+        "Disclosure",
+        "Copying",
+        "Sensitive",
+        "Files",
+        "Malicious",
+        "Installing",
+        "Network",
+        "Violating",
+        "Equipment",
+        "Software",
+        "Security",
+        "Tampering",
+        "Audit",
+        "Backdoors",
+        "Trade",
+        "Database",
+        "Areas",
+        "Remote",
+        "Deleting",
+        "Financial",
+        "Handling",
+        "Bypassing",
+        "Creation",
+        "Falsification",
+        "Selling"
+
     ]
+
     with open(rf"C:\Users\USER\PycharmProjects\fyp\{filename}.txt", 'r') as logKey:
         content = logKey.read().lower()
 
