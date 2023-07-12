@@ -75,7 +75,6 @@ def keyPressed(key):
             elif key == Key.esc:
                  pass
             elif str(key) == "Key.backspace":
-                print("Test")
                 if logKey.tell() > 0:
                     logKey.seek(logKey.tell() - 1)
                     logKey.truncate()
